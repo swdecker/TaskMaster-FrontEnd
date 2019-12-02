@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Task from '../components/Task'
 
+
 class TasksContainer extends Component {
   constructor() {
     super()
@@ -23,32 +24,18 @@ class TasksContainer extends Component {
 
 
   render() {
-    return (
-      <div>
-      <table className="table table-striped">
-        <thead>
-          <tr>
-            <th scope="col">Topping</th>
-            <th scope="col">Size</th>
-            <th scope="col">Vegetarian?</th>
-            <th scope="col">Edit</th>
-          </tr>
-        </thead>
-        <tbody>{
-          this.state.tasks.map(task => (<Task
-            name={task.name}
-            description={task.description}
-            priority={task.priority}/>))
-
-        }
-
-
-        </tbody>
-      </table>
-
-      </div>
-  )}
-
+      return (
+        <div>
+          <h2 align="center"> Tasks </h2>
+          {this.state.tasks.map(task => (<Task
+              id={task.id}
+              name={task.name}
+              description={task.description}
+              priority={task.priority}
+              duration={task.duration}/>))}
+        </div>
+            )
+          }
 }
 
 
