@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Task from "../components/Task";
-import MapContainer from "./MapContainer.js";
+import GeoCodeContainer from "./GeoCodeContainer";
 
 class TasksContainer extends Component {
   constructor() {
@@ -37,7 +37,7 @@ class TasksContainer extends Component {
           />
         ))}
         <div>
-          <MapContainer />
+          <GeoCodeContainer />
         </div>
       </div>
     );

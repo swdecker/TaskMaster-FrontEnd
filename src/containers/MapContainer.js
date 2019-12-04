@@ -2,15 +2,17 @@ import React, { Component } from "react";
 import GoogleMapReact from "google-map-react";
 
 export class MapContainer extends Component {
-  static defaultProps = {
-    center: {
-      lat: 30.27711,
-      lng: -97.74269
-    },
-    zoom: 15
-  };
+  constructor(props) {
+    super(props);
+    this.state = {
+      center: this.props.setCenter,
+      zoom: 15
+    };
+  }
 
   render() {
+    console.log(this.props);
+    console.log(process.env.REACT_APP_GOOGLE_API_KEY);
     return (
       <div
         style={{
@@ -21,23 +23,16 @@ export class MapContainer extends Component {
       >
         <h3>MAP CONTAINER</h3>
         <GoogleMapReact
-          title={"YOUR LOCATION"}
-          text="YOUR LOC"
-          label="testing"
           yesIWantToUseGoogleMapApiInternals
-          bootstrapURLKeys={{ key: "AIzaSyAp8DvfEziX5ZjgpnoD5kTLiC8XXPJtC7U" }}
-          defaultCenter={this.props.center}
-          defaultZoom={this.props.zoom}
+          bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}
+          defaultCenter={this.props.setCenter}
+          defaultZoom={this.state.zoom}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
         >
           <Marker
-            title={"YOUR LOCATION"}
-            text={"YOUR LOC"}
-            name="Location"
-            lat={this.props.center.lat}
-            lng={this.props.center.lng}
-            label="testing"
+            lat={this.props.setCenter.lat}
+            lng={this.props.setCenter.lng}
           />
         </GoogleMapReact>
       </div>
