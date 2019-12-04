@@ -9,9 +9,17 @@ export class MapContainer extends Component {
     },
     zoom: 15
   };
+
   render() {
+    console.log(this.props);
     return (
-      <div style={{ height: "80vh", width: "50%", position: "relative" }}>
+      <div
+        style={{
+          height: "80vh",
+          width: "50%",
+          position: "relative"
+        }}
+      >
         <h3>MAP CONTAINER</h3>
         <GoogleMapReact
           bootstrapURLKeys={{ key: "AIzaSyAp8DvfEziX5ZjgpnoD5kTLiC8XXPJtC7U" }}
@@ -19,10 +27,14 @@ export class MapContainer extends Component {
           defaultZoom={this.props.zoom}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
-        ></GoogleMapReact>
+        >
+          <Marker lat={this.props.center.lat} lng={this.props.center.lng} />
+        </GoogleMapReact>
       </div>
     );
   }
 }
-
+const Marker = props => {
+  return <div className="pin"></div>;
+};
 export default MapContainer;
