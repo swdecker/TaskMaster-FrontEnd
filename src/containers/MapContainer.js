@@ -11,7 +11,6 @@ export class MapContainer extends Component {
   };
 
   render() {
-    console.log(this.props);
     return (
       <div
         style={{
@@ -22,19 +21,35 @@ export class MapContainer extends Component {
       >
         <h3>MAP CONTAINER</h3>
         <GoogleMapReact
+          title={"YOUR LOCATION"}
+          text="YOUR LOC"
+          label="testing"
+          yesIWantToUseGoogleMapApiInternals
           bootstrapURLKeys={{ key: "AIzaSyAp8DvfEziX5ZjgpnoD5kTLiC8XXPJtC7U" }}
           defaultCenter={this.props.center}
           defaultZoom={this.props.zoom}
           onChildMouseEnter={this.onChildMouseEnter}
           onChildMouseLeave={this.onChildMouseLeave}
         >
-          <Marker lat={this.props.center.lat} lng={this.props.center.lng} />
+          <Marker
+            title={"YOUR LOCATION"}
+            text={"YOUR LOC"}
+            name="Location"
+            lat={this.props.center.lat}
+            lng={this.props.center.lng}
+            label="testing"
+          />
         </GoogleMapReact>
       </div>
     );
   }
 }
 const Marker = props => {
-  return <div className="pin"></div>;
+  return (
+    <>
+      <div className="pin"></div>
+      <div className="pulse"></div>
+    </>
+  );
 };
 export default MapContainer;

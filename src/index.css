@@ -11,7 +11,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
-
+/* .label {
+  content: "YOUR LOCATION";
+  width: 100px;
+  height: 30px;
+  background: white;
+} */
 .pin {
   width: 30px;
   height: 30px;
@@ -51,7 +56,6 @@ code {
   position: absolute;
   border-radius: 50%;
 }
-
 .pulse {
   background: rgba(0, 0, 0, 0.2);
   border-radius: 50%;
@@ -348,3 +352,4 @@ code {
     transform: translateY(0) rotate(-45deg);
   }
 }
+/* // map styling sourced by https://gist.github.com/jobsamuel/56496033bfb4d0f3e316aeb88341ed16 */
