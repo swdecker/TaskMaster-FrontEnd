@@ -4,8 +4,8 @@ import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap
 
 
 class TaskForm extends Component {
-  constructor(){
-    super()
+  constructor(props){
+    super(props)
 
     this.state = {
       name:'',
@@ -14,13 +14,12 @@ class TaskForm extends Component {
       description:'',
       category:'',
       duration:'',
-      modal: false
+      modal: false,
+      cat_id: null
 
 
     }
   }
-
-
 
   toggleModal = () => {
     this.setState({
@@ -37,25 +36,16 @@ class TaskForm extends Component {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        name: name
+        name: name,
+        user_id: 1
       })
     })
-    .then(response => {return response.json()})
-    .then(catData => {
-      let get = this.getCategories()
-      console.log(get)
-    })
+    .then(response => { return response.json()})
+    .then(catObj => { this.props.updateCategories(catObj)})
+
 }
 
-  getCategories = () => {
-    let catArray
-    fetch('/api/categories')
-      .then(response => {return response.json()})
-      .then(allCats => { catArray = allCats})
 
-    console.log(catArray)
-    return catArray
-  }
 
   changeHandler = (e) => {
     this.setState({[e.target.name]: e.target.value})
@@ -64,7 +54,6 @@ class TaskForm extends Component {
 
 
   submitHandler = (e) => {
-    console.log(this.state.category.id)
     e.preventDefault()
     fetch('/api/tasks', {
       method: 'POST',
@@ -86,15 +75,28 @@ class TaskForm extends Component {
 
       })
     })
+    .then(response => { return response.json()})
+    .then(taskObj => { this.props.updateTasks(taskObj)})
 
   }
   render() {
+
+    console.log("the current userCategories prop",this.props.userCategories)
+    this.props.userCategories && console.log("the length of usercats is longer than zero", this.props.userCategories.length > 0)
     const {name, priority, location, description, category, duration} = this.state
+    // const catNames =()=>{
+    //   if (this.state.userCategories && this.state.userCategories.length > 0 ){
+    //     return this.state.userCategories.map(cat => {return <option> {cat.name} </option>})
+    //   }
+    // }
+
+    const categories = this.props.userCategories
+    console.log(categories)
     return (
     <div>
       <Form onSubmit={this.submitHandler}>
       <FormGroup row>
-        <Label for="exampleEmail" sm={2}>Name</Label>
+        <Label for="name" sm={2}>Name</Label>
         <Col sm={10}>
           <Input
             type="text"
@@ -106,7 +108,7 @@ class TaskForm extends Component {
         </Col>
       </FormGroup>
       <FormGroup>
-        <Label for="exampleSelect">Priority</Label>
+        <Label for="priority">Priority</Label>
         <Input
           type="select"
           name="priority"
@@ -116,25 +118,32 @@ class TaskForm extends Component {
           <option>low</option>
           <option>medium</option>
           <option>high</option>
+
         </Input>
       </FormGroup>
-      <FormGroup>
-        <Label for="exampleSelect">Category</Label>
+
+      <FormGroup row>
+      <Label for="category">Category</Label>
         <Input
           type="select"
           name="category"
           id="category"
           value={category}
-          onChange={this.changeHandler} >
-          <option>ex</option>
-          <option>pet</option>
-          <option>car</option>
-          <option>{this.state.category}</option>
-        </Input>
-        <Button color="danger" onClick={this.toggleModal}>add category</Button>
+          onChange={this.changeHandler}>
+
+          <option>Hello from a basic option JSX</option>
+          {this.props.userCategories && this.props.userCategories.length > 0 ? this.props.userCategories.map(cat => {
+            return <option value={cat.id}>{cat.name}</option>
+          })
+        :
+        <option> Bad option</option>
+        }
+
+         </Input>
+         <Button color="danger" onClick={this.toggleModal}>add category</Button>
       </FormGroup>
       <FormGroup row>
-        <Label for="examplePassword" sm={2}>Location</Label>
+        <Label for="location" sm={2}>Location</Label>
         <Col sm={10}>
           <Input
             type="text"
@@ -157,18 +166,7 @@ class TaskForm extends Component {
             onChange={this.changeHandler} />
         </Col>
       </FormGroup>
-      <FormGroup row>
-        <Label for="exampleSelect" sm={2}>Category</Label>
-        <Col sm={10}>
-          <Input
-            type="text"
-            name="category"
-            id="category"
-            placeholder="Category..."
-            value={category}
-            onChange={this.changeHandler} />
-        </Col>
-      </FormGroup>
+
       <FormGroup row>
         <Label for="exampleText" sm={2}>Description</Label>
         <Col sm={10}>
@@ -180,18 +178,7 @@ class TaskForm extends Component {
             onChange={this.changeHandler} />
         </Col>
       </FormGroup>
-      <FormGroup row>
-        <Label for="exampleFile" sm={2}>File</Label>
-        <Col sm={10}>
-          <Input type="file" name="file" id="exampleFile" />
-          <FormText color="muted">
-
-          </FormText>
-        </Col>
-      </FormGroup>
-
-
-      <button type="submit"> Submit </button>
+        <button type="submit"> Submit </button>
     </Form>
 
     <NewCategoryModal

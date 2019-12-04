@@ -9,12 +9,12 @@ import Home from './components/Home';
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       isLoggedIn: false,
       user: {}
      };
   }
-  
+
   handleLogin = (data) => {
     this.setState({
       isLoggedIn: true,
@@ -48,15 +48,15 @@ class App extends Component {
 
 
   render() {
-    // if logged in => dashboard 
-  //  if not logged in => login 
+    // if logged in => dashboard
+  //  if not logged in => login
     return (
   <Router>
   <Switch>
       <Route exact path='/'>
       <div>
 
-        <TaskForm/>
+        
 
         <TasksContainer/>
       </div>
@@ -72,7 +72,7 @@ class App extends Component {
       </Route>
   </Switch>
   </Router>
-      
+
   )}
 }
 
