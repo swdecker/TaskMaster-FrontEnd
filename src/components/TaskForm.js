@@ -1,6 +1,8 @@
 import React, { Component }  from 'react'
 import NewCategoryModal from './NewCategoryModal'
 import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import DatePicker from 'react-datepicker';
+import "react-datepicker/dist/react-datepicker.css";
 
 
 class TaskForm extends Component {
@@ -15,9 +17,8 @@ class TaskForm extends Component {
       category:'',
       duration:'',
       modal: false,
-      cat_id: null
-
-
+      cat_id: null,
+      startDate: (new Date())
     }
   }
 
@@ -72,8 +73,9 @@ class TaskForm extends Component {
         location_id: 1,
         duration: this.state.duration,
         is_completed: false,
-        deadline: null,
+        deadline: this.state.startDate,
         user_id: 1
+
 
       })
     })
@@ -81,14 +83,19 @@ class TaskForm extends Component {
     .then(taskObj => { this.props.updateTasks(taskObj)})
   }
 
+  setStartDate = (date) => {
+  this.setState({
+    startDate: date
+  })
+
+  }
+
 
 
 
   render() {
-    const {name, priority, location, description, category, duration} = this.state
-
+    const {name, priority, location, description, category, duration, startDate} = this.state
     return (
-
       <div>
         <Form onSubmit={this.submitHandler}>
         <FormGroup row>
@@ -118,7 +125,7 @@ class TaskForm extends Component {
           </Input>
         </FormGroup>
 
-        <FormGroup row>
+        <FormGroup>
         <Label for="category">Category</Label>
           <Input
             type="select"
@@ -174,7 +181,22 @@ class TaskForm extends Component {
               onChange={this.changeHandler} />
           </Col>
         </FormGroup>
-          <button type="submit"> Submit </button>
+
+        <FormGroup row>
+          <Label for="exampleText" sm={2}>Deadline</Label>
+          <Col sm={10}>
+          <DatePicker
+            selected={startDate}
+            onChange={date => this.setStartDate(date)}
+            showTimeSelect
+            timeFormat="HH:mm"
+            timeIntervals={15}
+            timeCaption="time"
+            dateFormat="MMMM d, yyyy h:mm aa"
+          />
+          </Col>
+        </FormGroup>
+          <button type="submit"> Create Task </button>
       </Form>
 
       <NewCategoryModal

@@ -2,6 +2,7 @@ import GeoCodeContainer from "./GeoCodeContainer";
 import React, { Component } from 'react';
 import Task from '../components/Task'
 import TaskForm from '../components/TaskForm'
+import TaskZoom from '../components/TaskZoom'
 
 
 class TasksContainer extends Component {
@@ -9,7 +10,8 @@ class TasksContainer extends Component {
     super();
     this.state = {
       tasks: [],
-      categories: []
+      categories: [],
+      task_id: null
     }
   }
 
@@ -36,17 +38,33 @@ class TasksContainer extends Component {
     })
   }
 
-  removeTask = (taskId) => {
-    this.setState({
-      tasks: this.state.tasks.filter(task => (task.id !== taskId))
-    })
-  }
 
   deleteTask = (task_id) => {
     fetch('/api/tasks/' + task_id,{
       method: 'DELETE'
     })
     this.removeTask(task_id)
+  }
+
+  removeTask = (taskId) => {
+    this.setState({
+      tasks: this.state.tasks.filter(task => (task.id !== taskId))
+    })
+  }
+
+  taskIdHolder = (id) => {
+    console.log("KAAAREN!")
+    !this.state.task_id ? 
+    this.setState({
+      task_id: id
+      }) :
+    this.setState({
+      task_id: null
+      })
+  }
+
+  taskIdNull = () => {
+
   }
 
   render() {
@@ -62,6 +80,20 @@ class TasksContainer extends Component {
               description={task.description}
               priority={task.priority}
               duration={task.duration}
+              category={1}
+              deleteTask={this.deleteTask}
+              taskIdHolder={this.taskIdHolder}
+            />))
+          }
+          {this.state.tasks.filter(task => task.id === this.state.task_id).map(task => (
+            <TaskZoom
+              key={task.id}
+              id={task.id}
+              name={task.name}
+              description={task.description}
+              priority={task.priority}
+              duration={task.duration}
+              category={1}
               deleteTask={this.deleteTask}
             />))
           }
