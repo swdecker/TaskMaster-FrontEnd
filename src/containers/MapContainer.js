@@ -11,8 +11,6 @@ export class MapContainer extends Component {
   }
 
   render() {
-    console.log(this.props);
-    console.log(process.env.REACT_APP_GOOGLE_API_KEY);
     return (
       <div
         style={{
