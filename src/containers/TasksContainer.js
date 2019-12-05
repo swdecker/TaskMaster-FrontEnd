@@ -36,10 +36,23 @@ class TasksContainer extends Component {
     })
   }
 
+  removeTask = (taskId) => {
+    this.setState({
+      tasks: this.state.tasks.filter(task => (task.id !== taskId))
+    })
+  }
+
+  deleteTask = (task_id) => {
+    fetch('/api/tasks/' + task_id,{
+      method: 'DELETE'
+    })
+    this.removeTask(task_id)
+  }
+
   render() {
     return (
       <div>
-  
+
           <h2 align="center"> Tasks </h2>
           {this.state.tasks.map(task => (
             <Task
@@ -49,11 +62,14 @@ class TasksContainer extends Component {
               description={task.description}
               priority={task.priority}
               duration={task.duration}
+              deleteTask={this.deleteTask}
             />))
           }
-          <TaskForm userCategories={this.state.categories}
-                    updateCategories={this.updateCategories}
-                    updateTasks={this.updateTasks}/>
+            <TaskForm
+              userCategories={this.state.categories}
+              updateCategories={this.updateCategories}
+              updateTasks={this.updateTasks}
+            />
         <div>
           <GeoCodeContainer />
         </div>
