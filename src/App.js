@@ -1,19 +1,9 @@
-<<<<<<< HEAD
 import React, { Component } from "react";
 import TasksContainer from "./containers/TasksContainer";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Login from "./components/registrations/Login";
 import Signup from "./components/registrations/Signup";
 import Home from "./components/Home";
-=======
-
-import React, { Component } from 'react';
-import TasksContainer from './containers/TasksContainer'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
-import Login from './components/registrations/Login'
-import Signup from './components/registrations/Signup'
-import Home from './components/Home';
->>>>>>> master
 import axios from "axios";
 
 class App extends Component {
@@ -64,13 +54,14 @@ class App extends Component {
       <div>
         <Router>
           <Switch>
-          <Route exact path='/'>
-            <div>
-              <TasksContainer user={this.state.user}/>
-            </div>
-          </Route>
-          <Route 
-              exact path='/home' 
+            <Route exact path="/">
+              <div>
+                <TasksContainer user={this.state.user} />
+              </div>
+            </Route>
+            <Route
+              exact
+              path="/home"
               render={props => (
                 <Home
                   {...props}
