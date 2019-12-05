@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import NewCategoryModal from "./NewCategoryModal";
 import {
   Col,
+  Button,
   Form,
   FormGroup,
   Label,
@@ -123,7 +124,22 @@ class TaskForm extends Component {
                 />
               </FormGroup>
             </Col>
-            <Col md={3}>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="task-description">Description</Label>
+                <Input
+                  type="text"
+                  name="description"
+                  id="task-description"
+                  value={description}
+                  onChange={this.changeHandler}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={4}>
               <FormGroup>
                 <Label for="priority">Priority</Label>
                 <Input
@@ -139,14 +155,30 @@ class TaskForm extends Component {
                 </Input>
               </FormGroup>
             </Col>
-            <Col md={3}>
+
+            <Col md={4}>
+              <FormGroup>
+                <Label for="task-duration">Duration</Label>
+
+                <Input
+                  type="text"
+                  name="task-duration"
+                  id="task-duration"
+                  placeholder="Length of time in minutes..."
+                  value={duration}
+                  onChange={this.changeHandler}
+                />
+              </FormGroup>
+            </Col>
+
+            <Col md={4}>
               <FormGroup>
                 <Label for="category">Category</Label>
                 <Dropdown
                   isOpen={dropdownCatOpen}
                   toggle={this.handleCatToggle}
                 >
-                  <DropdownToggle id="category" caret>
+                  <DropdownToggle block id="category" caret>
                     Choose Category
                   </DropdownToggle>
                   <DropdownMenu>
@@ -170,52 +202,28 @@ class TaskForm extends Component {
             </Col>
           </Row>
 
-          <FormGroup row>
-            <Label for="location" sm={2}>
-              Location
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="text"
-                name="location"
-                id="location"
-                placeholder="Location..."
-                value={location}
-                onChange={this.changeHandler}
-              />
+          <Row>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="task-location">Your Saved Locations</Label>
+                <Dropdown>
+                  <DropdownToggle block id="task-location" caret>
+                    Choose Location
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.toggleLocModal}>
+                      Add new location
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </FormGroup>
             </Col>
-          </FormGroup>
-          <FormGroup row>
-            <Label for="exampleSelect" sm={2}>
-              Duration
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="text"
-                name="duration"
-                id="duration"
-                placeholder="Length of time in minutes..."
-                value={duration}
-                onChange={this.changeHandler}
-              />
-            </Col>
-          </FormGroup>
+          </Row>
 
-          <FormGroup row>
-            <Label for="exampleText" sm={2}>
-              Description
-            </Label>
-            <Col sm={6}>
-              <Input
-                type="textarea"
-                name="description"
-                id="exampleText"
-                value={description}
-                onChange={this.changeHandler}
-              />
-            </Col>
-          </FormGroup>
-          <button type="submit"> Submit </button>
+          <Button type="submit" color="primary">
+            Add new task
+          </Button>
         </Form>
 
         <NewCategoryModal
