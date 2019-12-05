@@ -2,12 +2,15 @@ import React, { Component } from "react";
 import NewCategoryModal from "./NewCategoryModal";
 import {
   Col,
-  Button,
   Form,
   FormGroup,
   Label,
   Input,
-  FormText
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Row
 } from "reactstrap";
 
 class TaskForm extends Component {
@@ -22,7 +25,8 @@ class TaskForm extends Component {
       category: "",
       duration: "",
       modal: false,
-      cat_id: null
+      cat_id: null,
+      dropdownCatOpen: false
     };
   }
 
@@ -55,8 +59,6 @@ class TaskForm extends Component {
 
   changeHandler = e => {
     this.setState({ [e.target.name]: e.target.value });
-
-    console.log(this.state.category);
   };
 
   submitHandler = e => {
@@ -87,72 +89,87 @@ class TaskForm extends Component {
       });
   };
 
+  handleCatToggle = e => {
+    this.setState({
+      dropdownCatOpen: !this.state.dropdownCatOpen
+    });
+  };
+
   render() {
     const {
       name,
       priority,
       location,
       description,
-      category,
-      duration
+      duration,
+      dropdownCatOpen
     } = this.state;
 
     return (
-      <div>
+      <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+        <h3>Add a New Task</h3>
         <Form onSubmit={this.submitHandler}>
-          <FormGroup row>
-            <Label for="name" sm={2}>
-              Name
-            </Label>
-            <Col sm={10}>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                placeholder="Name of Task..."
-                value={name}
-                onChange={this.changeHandler}
-              />
+          <Row>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="name">Name</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Name of Task..."
+                  value={name}
+                  onChange={this.changeHandler}
+                />
+              </FormGroup>
             </Col>
-          </FormGroup>
-          <FormGroup>
-            <Label for="priority">Priority</Label>
-            <Input
-              type="select"
-              name="priority"
-              id="priority"
-              value={priority}
-              onChange={this.changeHandler}
-            >
-              <option>low</option>
-              <option>medium</option>
-              <option>high</option>
-            </Input>
-          </FormGroup>
+            <Col md={3}>
+              <FormGroup>
+                <Label for="priority">Priority</Label>
+                <Input
+                  type="select"
+                  name="priority"
+                  id="priority"
+                  value={priority}
+                  onChange={this.changeHandler}
+                >
+                  <option>low</option>
+                  <option>medium</option>
+                  <option>high</option>
+                </Input>
+              </FormGroup>
+            </Col>
+            <Col md={3}>
+              <FormGroup>
+                <Label for="category">Category</Label>
+                <Dropdown
+                  isOpen={dropdownCatOpen}
+                  toggle={this.handleCatToggle}
+                >
+                  <DropdownToggle id="category" caret>
+                    Choose Category
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.props.userCategories &&
+                    this.props.userCategories.length > 0
+                      ? this.props.userCategories.map(cat => {
+                          return (
+                            <DropdownItem key={cat.id} value={cat.id}>
+                              {cat.name}
+                            </DropdownItem>
+                          );
+                        })
+                      : null}
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.toggleModal}>
+                      Add new category
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </FormGroup>
+            </Col>
+          </Row>
 
-          <FormGroup row>
-            <Label for="category">Category</Label>
-            <Input
-              type="select"
-              name="category"
-              id="category"
-              value={category}
-              onChange={this.changeHandler}
-            >
-              <option>Hello from a basic option JSX</option>
-              {this.props.userCategories &&
-              this.props.userCategories.length > 0 ? (
-                this.props.userCategories.map(cat => {
-                  return <option value={cat.id}>{cat.name}</option>;
-                })
-              ) : (
-                <option> Bad option</option>
-              )}
-            </Input>
-            <Button color="danger" onClick={this.toggleModal}>
-              add category
-            </Button>
-          </FormGroup>
           <FormGroup row>
             <Label for="location" sm={2}>
               Location
@@ -188,7 +205,7 @@ class TaskForm extends Component {
             <Label for="exampleText" sm={2}>
               Description
             </Label>
-            <Col sm={10}>
+            <Col sm={6}>
               <Input
                 type="textarea"
                 name="description"
