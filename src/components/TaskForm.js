@@ -13,6 +13,8 @@ import {
   DropdownItem,
   Row
 } from "reactstrap";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
 class TaskForm extends Component {
   constructor(props) {
@@ -29,7 +31,8 @@ class TaskForm extends Component {
       cat_id: null,
       dropdownCatOpen: false,
       dropdownLocOpen: false,
-      locModal: false
+      locModal: false,
+      startDate: new Date()
     };
   }
 
@@ -86,7 +89,7 @@ class TaskForm extends Component {
         location_id: 1,
         duration: this.state.duration,
         is_completed: false,
-        deadline: null,
+        deadline: this.state.startDate,
         user_id: 1
       })
     })
@@ -96,6 +99,12 @@ class TaskForm extends Component {
       .then(taskObj => {
         this.props.updateTasks(taskObj);
       });
+  };
+
+  setStartDate = date => {
+    this.setState({
+      startDate: date
+    });
   };
 
   handleCatToggle = e => {
@@ -118,7 +127,8 @@ class TaskForm extends Component {
       location,
       description,
       duration,
-      dropdownCatOpen
+      dropdownCatOpen,
+      startDate
     } = this.state;
 
     return (
@@ -234,6 +244,23 @@ class TaskForm extends Component {
               </FormGroup>
             </Col>
           </Row>
+
+          <FormGroup row>
+            <Label for="exampleText" sm={2}>
+              Deadline
+            </Label>
+            <Col sm={10}>
+              <DatePicker
+                selected={startDate}
+                onChange={date => this.setStartDate(date)}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                timeCaption="time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+              />
+            </Col>
+          </FormGroup>
 
           <Button type="submit" color="primary">
             Add new task
