@@ -27,13 +27,21 @@ class TaskForm extends Component {
       duration: "",
       modal: false,
       cat_id: null,
-      dropdownCatOpen: false
+      dropdownCatOpen: false,
+      dropdownLocOpen: false,
+      locModal: false
     };
   }
 
   toggleModal = () => {
     this.setState({
       modal: !this.state.modal
+    });
+  };
+
+  toggleLocModal = () => {
+    this.setState({
+      locModal: !this.state.locModal
     });
   };
 
@@ -96,7 +104,14 @@ class TaskForm extends Component {
     });
   };
 
+  handleLocToggle = e => {
+    this.setState({
+      dropdownLocOpen: !this.state.dropdownLocOpen
+    });
+  };
+
   render() {
+    console.log(this.props);
     const {
       name,
       priority,
@@ -205,18 +220,17 @@ class TaskForm extends Component {
           <Row>
             <Col md={6}>
               <FormGroup>
-                <Label for="task-location">Your Saved Locations</Label>
-                <Dropdown>
-                  <DropdownToggle block id="task-location" caret>
-                    Choose Location
-                  </DropdownToggle>
-                  <DropdownMenu>
-                    <DropdownItem divider />
-                    <DropdownItem onClick={this.toggleLocModal}>
-                      Add new location
-                    </DropdownItem>
-                  </DropdownMenu>
-                </Dropdown>
+                <Label for="task-location">Choose Location</Label>
+
+                <DropdownToggle block id="task-location" caret>
+                  Choose Location
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.toggleLocModal}>
+                    Add new location
+                  </DropdownItem>
+                </DropdownMenu>
               </FormGroup>
             </Col>
           </Row>
