@@ -3,11 +3,12 @@ import React, { Component } from 'react';
 import Task from '../components/Task'
 import TaskForm from '../components/TaskForm'
 import TaskZoom from '../components/TaskZoom'
+import axios from 'axios'
 
 
 class TasksContainer extends Component {
-  constructor() {
-    super();
+  constructor(props) {
+    super(props);
     this.state = {
       tasks: [],
       categories: [],
@@ -16,13 +17,28 @@ class TasksContainer extends Component {
   }
 
   componentDidMount(){
+    this.initialFetch()
+    this.userFetch()
+  }
+
+  initialFetch = ()=>{
     fetch('/api/tasks')
-    .then(response => { return response.json()})
-    .then(userData => { this.setState({
-      tasks: userData['tasks'],
-      categories: userData['categories']
+      .then(response => { return response.json()})
+      .then(userData => { 
+        this.setState({
+          tasks: userData['tasks'],
+          categories: userData['categories']
+        })
       })
-    })
+  }
+
+  userFetch = ()=>{
+    if (this.props.user){
+      axios.get(`http://localhost:3001/api/tasks/${this.props.user.id}`, {withCredentials: true})
+      .then(response=>{
+        console.log(response)
+      })
+    }
   }
 
   updateCategories = (catObject) => {
