@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import TasksContainer from './containers/TasksContainer'
 import TaskForm from './components/TaskForm'
@@ -10,7 +11,7 @@ import axios from "axios";
 class App extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
+    this.state = {
       isLoggedIn: false,
       user: {}
     };
@@ -33,7 +34,7 @@ class App extends Component {
     })
     .catch(error=> console.log('api errors:', error))
   }
-  
+
   handleLogin = (data) => {
     console.log(data.user)
     this.setState({
@@ -56,7 +57,6 @@ class App extends Component {
           <Switch>
           <Route exact path='/'>
             <div>
-              <TaskForm/>
               <TasksContainer/>
             </div>
           </Route>
