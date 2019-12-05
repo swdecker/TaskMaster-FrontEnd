@@ -49,6 +49,8 @@ class TaskForm extends Component {
 
   changeHandler = (e) => {
     this.setState({[e.target.name]: e.target.value})
+
+    console.log(this.state.category)
   }
 
 
@@ -66,7 +68,7 @@ class TaskForm extends Component {
         name: this.state.name,
         priority: this.state.priority,
         description: this.state.description,
-        category_id: 1,
+        category_id: this.state.category,
         location_id: 1,
         duration: this.state.duration,
         is_completed: false,
@@ -93,6 +95,7 @@ class TaskForm extends Component {
     const categories = this.props.userCategories
     console.log(categories)
     return (
+
     <div>
       <Form onSubmit={this.submitHandler}>
       <FormGroup row>
@@ -190,5 +193,6 @@ class TaskForm extends Component {
     )
   }
 }
+
 
 export default TaskForm
