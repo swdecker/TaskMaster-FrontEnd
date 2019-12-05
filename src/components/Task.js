@@ -27,6 +27,9 @@ const Task = (props) => {
               <td>
                <Button color="primary">Done!</Button>{''}
               </td>
+              <td>
+               <Button onClick={() => props.deleteTask(props.id)} color="primary">Delete!</Button>{''}
+              </td>
             </tr>
           </tbody>
     </Table>
