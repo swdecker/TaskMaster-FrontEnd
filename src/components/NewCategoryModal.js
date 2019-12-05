@@ -26,7 +26,7 @@ class NewCategoryModal extends Component {
       <Modal isOpen={this.props.modal} toggle={this.props.toggleModal}>
         <ModalHeader toggle={this.props.toggleModal}>Add Category</ModalHeader>
         <ModalBody>
-        hello hellooooo
+        Add a Category...
 
         </ModalBody>
         <ModalFooter>
