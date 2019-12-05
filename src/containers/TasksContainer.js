@@ -1,3 +1,4 @@
+import GeoCodeContainer from "./GeoCodeContainer";
 import React, { Component } from 'react';
 import Task from '../components/Task'
 import TaskForm from '../components/TaskForm'
@@ -5,7 +6,7 @@ import TaskForm from '../components/TaskForm'
 
 class TasksContainer extends Component {
   constructor() {
-    super()
+    super();
     this.state = {
       tasks: [],
       categories: []
@@ -35,11 +36,10 @@ class TasksContainer extends Component {
     })
   }
 
-
-
   render() {
-      return (
-        <div>
+    return (
+      <div>
+  
           <h2 align="center"> Tasks </h2>
           {this.state.tasks.map(task => (
             <Task
@@ -54,12 +54,13 @@ class TasksContainer extends Component {
           <TaskForm userCategories={this.state.categories}
                     updateCategories={this.updateCategories}
                     updateTasks={this.updateTasks}/>
+        <div>
+          <GeoCodeContainer />
+        </div>
 
         </div>
       )
   }
 }
-
-
 
 export default TasksContainer;

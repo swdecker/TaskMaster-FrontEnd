@@ -1,3 +1,4 @@
+
 import React, { Component } from 'react';
 import TasksContainer from './containers/TasksContainer'
 import TaskForm from './components/TaskForm'
@@ -55,8 +56,7 @@ class App extends Component {
   <Switch>
       <Route exact path='/'>
       <div>
-
-        
+       
 
         <TasksContainer/>
       </div>
