@@ -1,7 +1,6 @@
 
 import React, { Component } from 'react';
 import TasksContainer from './containers/TasksContainer'
-import TaskForm from './components/TaskForm'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import Login from './components/registrations/Login'
 import Signup from './components/registrations/Signup'
@@ -57,7 +56,7 @@ class App extends Component {
           <Switch>
           <Route exact path='/'>
             <div>
-              <TasksContainer/>
+              <TasksContainer user={this.state.user}/>
             </div>
           </Route>
           <Route 
