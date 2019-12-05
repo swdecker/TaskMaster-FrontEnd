@@ -1,10 +1,9 @@
 import GeoCodeContainer from "./GeoCodeContainer";
-import React, { Component } from 'react';
-import Task from '../components/Task'
-import TaskForm from '../components/TaskForm'
-import TaskZoom from '../components/TaskZoom'
-import axios from 'axios'
-
+import React, { Component } from "react";
+import Task from "../components/Task";
+import TaskForm from "../components/TaskForm";
+import TaskZoom from "../components/TaskZoom";
+import axios from "axios";
 
 class TasksContainer extends Component {
   constructor(props) {
@@ -13,82 +12,81 @@ class TasksContainer extends Component {
       tasks: [],
       categories: [],
       task_id: null
-    }
+    };
   }
 
-  componentDidMount(){
-    this.initialFetch()
-    this.userFetch()
+  componentDidMount() {
+    this.initialFetch();
+    this.userFetch();
   }
 
-  initialFetch = ()=>{
-    fetch('/api/tasks')
-      .then(response => { return response.json()})
-      .then(userData => { 
+  initialFetch = () => {
+    fetch("/api/tasks")
+      .then(response => {
+        return response.json();
+      })
+      .then(userData => {
         this.setState({
-          tasks: userData['tasks'],
-          categories: userData['categories']
+          tasks: userData["tasks"],
+          categories: userData["categories"]
+        });
+      });
+  };
+
+  userFetch = () => {
+    if (this.props.user) {
+      axios
+        .get(`http://localhost:3001/api/tasks/${this.props.user.id}`, {
+          withCredentials: true
         })
-      })
-  }
-
-  userFetch = ()=>{
-    if (this.props.user){
-      axios.get(`http://localhost:3001/api/tasks/${this.props.user.id}`, {withCredentials: true})
-      .then(response=>{
-        console.log(response)
-      })
+        .then(response => {
+          console.log(response);
+        });
     }
-  }
+  };
 
-  updateCategories = (catObject) => {
+  updateCategories = catObject => {
     this.setState({
       categories: [...this.state.categories, catObject]
-    })
+    });
+  };
 
-  }
-
-  updateTasks = (taskObject) => {
+  updateTasks = taskObject => {
     this.setState({
       tasks: [...this.state.tasks, taskObject]
-    })
-  }
+    });
+  };
 
+  deleteTask = task_id => {
+    fetch("/api/tasks/" + task_id, {
+      method: "DELETE"
+    });
+    this.removeTask(task_id);
+  };
 
-  deleteTask = (task_id) => {
-    fetch('/api/tasks/' + task_id,{
-      method: 'DELETE'
-    })
-    this.removeTask(task_id)
-  }
-
-  removeTask = (taskId) => {
+  removeTask = taskId => {
     this.setState({
-      tasks: this.state.tasks.filter(task => (task.id !== taskId))
-    })
-  }
+      tasks: this.state.tasks.filter(task => task.id !== taskId)
+    });
+  };
 
-  taskIdHolder = (id) => {
-    console.log("KAAAREN!")
-    !this.state.task_id ? 
-    this.setState({
-      task_id: id
-      }) :
-    this.setState({
-      task_id: null
-      })
-  }
-
-  taskIdNull = () => {
-
-  }
+  taskIdHolder = id => {
+    console.log("KAAAREN!");
+    !this.state.task_id
+      ? this.setState({
+          task_id: id
+        })
+      : this.setState({
+          task_id: null
+        });
+  };
 
   render() {
     return (
       <div>
-
-          <h2 align="center"> Tasks </h2>
-          {this.state.tasks.map(task => (
+        <h2 align="center"> Tasks </h2>
+        {this.state.tasks &&
+          this.state.tasks.map(task => (
             <Task
               key={task.id}
               id={task.id}
@@ -99,9 +97,11 @@ class TasksContainer extends Component {
               category={1}
               deleteTask={this.deleteTask}
               taskIdHolder={this.taskIdHolder}
-            />))
-          }
-          {this.state.tasks.filter(task => task.id === this.state.task_id).map(task => (
+            />
+          ))}
+        {this.state.tasks
+          .filter(task => task.id === this.state.task_id)
+          .map(task => (
             <TaskZoom
               key={task.id}
               id={task.id}
@@ -111,19 +111,18 @@ class TasksContainer extends Component {
               duration={task.duration}
               category={1}
               deleteTask={this.deleteTask}
-            />))
-          }
-            <TaskForm
-              userCategories={this.state.categories}
-              updateCategories={this.updateCategories}
-              updateTasks={this.updateTasks}
             />
+          ))}
+        <TaskForm
+          userCategories={this.state.categories}
+          updateCategories={this.updateCategories}
+          updateTasks={this.updateTasks}
+        />
         <div>
           <GeoCodeContainer />
         </div>
-
-        </div>
-      )
+      </div>
+    );
   }
 }
 

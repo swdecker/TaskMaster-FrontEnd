@@ -1,71 +1,87 @@
-import React, { Component }  from 'react'
-import NewCategoryModal from './NewCategoryModal'
-import { Col, Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
-import DatePicker from 'react-datepicker';
+import React, { Component } from "react";
+import NewCategoryModal from "./NewCategoryModal";
+import {
+  Col,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Dropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem,
+  Row
+} from "reactstrap";
+import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-
 class TaskForm extends Component {
-  constructor(props){
-    super(props)
+  constructor(props) {
+    super(props);
 
     this.state = {
-      name:'',
-      priority:'',
-      location:'',
-      description:'',
-      category:'',
-      duration:'',
+      name: "",
+      priority: "",
+      location: "",
+      description: "",
+      category: "",
+      duration: "",
       modal: false,
       cat_id: null,
-      startDate: (new Date())
-    }
+      dropdownCatOpen: false,
+      dropdownLocOpen: false,
+      locModal: false,
+      startDate: new Date()
+    };
   }
 
   toggleModal = () => {
     this.setState({
       modal: !this.state.modal
-    })
-  }
+    });
+  };
 
-  postCat = (name) => {
-    this.toggleModal()
-    fetch('/api/categories', {
-      method: 'POST',
+  toggleLocModal = () => {
+    this.setState({
+      locModal: !this.state.locModal
+    });
+  };
+
+  postCat = name => {
+    this.toggleModal();
+    fetch("/api/categories", {
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
         name: name,
         user_id: 1
       })
     })
-    .then(response => { return response.json()})
-    .then(catObj => { this.props.updateCategories(catObj)})
+      .then(response => {
+        return response.json();
+      })
+      .then(catObj => {
+        this.props.updateCategories(catObj);
+      });
+  };
 
-}
+  changeHandler = e => {
+    this.setState({ [e.target.name]: e.target.value });
+  };
 
-
-
-  changeHandler = (e) => {
-    this.setState({[e.target.name]: e.target.value})
-
-    console.log(this.state.category)
-  }
-
-
-
-  submitHandler = (e) => {
-    e.preventDefault()
-    fetch('/api/tasks', {
-      method: 'POST',
+  submitHandler = e => {
+    e.preventDefault();
+    fetch("/api/tasks", {
+      method: "POST",
       headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
+        Accept: "application/json",
+        "Content-Type": "application/json"
       },
       body: JSON.stringify({
-
         name: this.state.name,
         priority: this.state.priority,
         description: this.state.description,
@@ -75,140 +91,191 @@ class TaskForm extends Component {
         is_completed: false,
         deadline: this.state.startDate,
         user_id: 1
-
-
       })
     })
-    .then(response => { return response.json()})
-    .then(taskObj => { this.props.updateTasks(taskObj)})
-  }
+      .then(response => {
+        return response.json();
+      })
+      .then(taskObj => {
+        this.props.updateTasks(taskObj);
+      });
+  };
 
-  setStartDate = (date) => {
-  this.setState({
-    startDate: date
-  })
+  setStartDate = date => {
+    this.setState({
+      startDate: date
+    });
+  };
 
-  }
+  handleCatToggle = e => {
+    this.setState({
+      dropdownCatOpen: !this.state.dropdownCatOpen
+    });
+  };
 
-
-
+  handleLocToggle = e => {
+    this.setState({
+      dropdownLocOpen: !this.state.dropdownLocOpen
+    });
+  };
 
   render() {
-    const {name, priority, location, description, category, duration, startDate} = this.state
+    console.log(this.props);
+    const {
+      name,
+      priority,
+      location,
+      description,
+      duration,
+      dropdownCatOpen,
+      startDate
+    } = this.state;
+
     return (
-      <div>
+      <div style={{ maxWidth: "700px", margin: "0 auto" }}>
+        <h3>Add a New Task</h3>
         <Form onSubmit={this.submitHandler}>
-        <FormGroup row>
-          <Label for="name" sm={2}>Name</Label>
-          <Col sm={10}>
-            <Input
-              type="text"
-              name="name"
-              id="name"
-              placeholder="Name of Task..."
-              value={name}
-              onChange={this.changeHandler} />
-          </Col>
-        </FormGroup>
-        <FormGroup>
-          <Label for="priority">Priority</Label>
-          <Input
-            type="select"
-            name="priority"
-            id="priority"
-            value={priority}
-            onChange={this.changeHandler} >
-            <option>low</option>
-            <option>medium</option>
-            <option>high</option>
+          <Row>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="name">Name</Label>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  placeholder="Name of Task..."
+                  value={name}
+                  onChange={this.changeHandler}
+                />
+              </FormGroup>
+            </Col>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="task-description">Description</Label>
+                <Input
+                  type="text"
+                  name="description"
+                  id="task-description"
+                  value={description}
+                  onChange={this.changeHandler}
+                />
+              </FormGroup>
+            </Col>
+          </Row>
 
-          </Input>
-        </FormGroup>
+          <Row>
+            <Col md={4}>
+              <FormGroup>
+                <Label for="priority">Priority</Label>
+                <Input
+                  type="select"
+                  name="priority"
+                  id="priority"
+                  value={priority}
+                  onChange={this.changeHandler}
+                >
+                  <option>low</option>
+                  <option>medium</option>
+                  <option>high</option>
+                </Input>
+              </FormGroup>
+            </Col>
 
-        <FormGroup>
-        <Label for="category">Category</Label>
-          <Input
-            type="select"
-            name="category"
-            id="category"
-            value={category}
-            onChange={this.changeHandler}>
+            <Col md={4}>
+              <FormGroup>
+                <Label for="task-duration">Duration</Label>
 
-            <option>Hello from a basic option JSX</option>
-            {this.props.userCategories && this.props.userCategories.length > 0 ? this.props.userCategories.map(cat => {
-              return <option value={cat.id}>{cat.name}</option>
-            })
-          :
-          <option> Bad option</option>
-          }
+                <Input
+                  type="text"
+                  name="task-duration"
+                  id="task-duration"
+                  placeholder="Length of time in minutes..."
+                  value={duration}
+                  onChange={this.changeHandler}
+                />
+              </FormGroup>
+            </Col>
 
-           </Input>
-           <Button color="danger" onClick={this.toggleModal}>add category</Button>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="location" sm={2}>Location</Label>
-          <Col sm={10}>
-            <Input
-              type="text"
-              name="location"
-              id="location"
-              placeholder="Location..."
-              value={location}
-              onChange={this.changeHandler} />
-          </Col>
-        </FormGroup>
-        <FormGroup row>
-          <Label for="exampleSelect" sm={2}>Duration</Label>
-          <Col sm={10}>
-            <Input
-              type="text"
-              name="duration"
-              id="duration"
-              placeholder="Length of time in minutes..."
-              value={duration}
-              onChange={this.changeHandler} />
-          </Col>
-        </FormGroup>
+            <Col md={4}>
+              <FormGroup>
+                <Label for="category">Category</Label>
+                <Dropdown
+                  isOpen={dropdownCatOpen}
+                  toggle={this.handleCatToggle}
+                >
+                  <DropdownToggle block id="category" caret>
+                    Choose Category
+                  </DropdownToggle>
+                  <DropdownMenu>
+                    {this.props.userCategories &&
+                    this.props.userCategories.length > 0
+                      ? this.props.userCategories.map(cat => {
+                          return (
+                            <DropdownItem key={cat.id} value={cat.id}>
+                              {cat.name}
+                            </DropdownItem>
+                          );
+                        })
+                      : null}
+                    <DropdownItem divider />
+                    <DropdownItem onClick={this.toggleModal}>
+                      Add new category
+                    </DropdownItem>
+                  </DropdownMenu>
+                </Dropdown>
+              </FormGroup>
+            </Col>
+          </Row>
 
-        <FormGroup row>
-          <Label for="exampleText" sm={2}>Description</Label>
-          <Col sm={10}>
-            <Input
-              type="textarea"
-              name="description"
-              id="exampleText"
-              value={description}
-              onChange={this.changeHandler} />
-          </Col>
-        </FormGroup>
+          <Row>
+            <Col md={6}>
+              <FormGroup>
+                <Label for="task-location">Choose Location</Label>
 
-        <FormGroup row>
-          <Label for="exampleText" sm={2}>Deadline</Label>
-          <Col sm={10}>
-          <DatePicker
-            selected={startDate}
-            onChange={date => this.setStartDate(date)}
-            showTimeSelect
-            timeFormat="HH:mm"
-            timeIntervals={15}
-            timeCaption="time"
-            dateFormat="MMMM d, yyyy h:mm aa"
-          />
-          </Col>
-        </FormGroup>
-          <button type="submit"> Create Task </button>
-      </Form>
+                <DropdownToggle block id="task-location" caret>
+                  Choose Location
+                </DropdownToggle>
+                <DropdownMenu>
+                  <DropdownItem divider />
+                  <DropdownItem onClick={this.toggleLocModal}>
+                    Add new location
+                  </DropdownItem>
+                </DropdownMenu>
+              </FormGroup>
+            </Col>
+          </Row>
 
-      <NewCategoryModal
-      modal={this.state.modal}
-      toggleModal={this.toggleModal}
-      handleCatPost={this.handleCatPost}
-      postCat={this.postCat}
-       />
-    </div>
-    )
+          <FormGroup row>
+            <Label for="exampleText" sm={2}>
+              Deadline
+            </Label>
+            <Col sm={10}>
+              <DatePicker
+                selected={startDate}
+                onChange={date => this.setStartDate(date)}
+                showTimeSelect
+                timeFormat="HH:mm"
+                timeIntervals={15}
+                timeCaption="time"
+                dateFormat="MMMM d, yyyy h:mm aa"
+              />
+            </Col>
+          </FormGroup>
+
+          <Button type="submit" color="primary">
+            Add new task
+          </Button>
+        </Form>
+
+        <NewCategoryModal
+          modal={this.state.modal}
+          toggleModal={this.toggleModal}
+          handleCatPost={this.handleCatPost}
+          postCat={this.postCat}
+        />
+      </div>
+    );
   }
 }
 
-
-export default TaskForm
+export default TaskForm;
