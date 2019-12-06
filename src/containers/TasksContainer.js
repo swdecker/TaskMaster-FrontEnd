@@ -53,10 +53,11 @@ class TasksContainer extends Component {
           withCredentials: true
         })
         .then(response => {
+          console.log(response.data)
           this.setState({
             userCategories: response.data.categories,
             userLocations: response.data.locations,
-            userTasks: response.data.tasks.data.map(task=> ({ id: task.id, ...task.attributes}) )
+            userTasks: response.data.tasks.data.map(task=> ({ id: task.id, ...task.attributes, category:{ id: task.relationships.category.data.id, name: response.data.categories.find(cat=>cat.id==task.relationships.category.data.id).name }, location:{id: task.relationships.location.data.id, ...response.data.locations.find(l=>l.id==task.relationships.location.data.id) } }) )
           })
         });
     }
@@ -103,7 +104,7 @@ class TasksContainer extends Component {
       <div>
         <h2 align="center"> Tasks </h2>
         {this.state.tasks &&
-          this.state.tasks.map(task => (
+          this.state.userTasks.map(task => (
             <Task
               key={task.id}
               id={task.id}
