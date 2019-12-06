@@ -15,6 +15,7 @@ import {
 } from "reactstrap";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import "./style.css";
 
 class TaskForm extends Component {
   constructor(props) {
@@ -242,6 +243,7 @@ class TaskForm extends Component {
               <Label for="take-deadline">Deadline</Label>
               <FormGroup>
                 <DatePicker
+                  block
                   selected={startDate}
                   onChange={date => this.setStartDate(date)}
                   showTimeSelect
@@ -252,9 +254,6 @@ class TaskForm extends Component {
                 />
               </FormGroup>
             </Col>
-          </Row>
-
-          <Row>
             <Col md={6}>
               <FormGroup>
                 <Label for="task-location">Choose Location</Label>
@@ -280,6 +279,9 @@ class TaskForm extends Component {
             </Col>
           </Row>
         </Form>
+        <br />
+        <br />
+        <hr />
 
         <NewCategoryModal
           modal={this.state.modal}
