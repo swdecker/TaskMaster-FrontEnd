@@ -8,8 +8,8 @@ const Task = props => {
       <td>{props.task.id}</td>
       <td>{name}</td>
       <td>{priority}</td>
-      <td>{category}</td>
-      <td>{location}</td>
+      <td>{category.name}</td>
+      <td>{location.name}</td>
       <td>
         <Button color="primary">Done!</Button>
       </td>
