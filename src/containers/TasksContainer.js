@@ -21,23 +21,24 @@ class TasksContainer extends Component {
       userCategories:[],
       userLocations:[],
       category_filter: null
+
     };
   }
 
-  componentDidMount(){
-    this.shouldRedirect()
-    this.initialFetch()
-    this.userFetch()
+  componentDidMount() {
+    this.shouldRedirect();
+    this.initialFetch();
+    this.userFetch();
   }
-  componentDidUpdate(){
-    this.shouldRedirect()
+  componentDidUpdate() {
+    this.shouldRedirect();
   }
-  shouldRedirect = ()=>{
-    if(this.props.fetchComplete && !this.props.loggedInStatus) {
-      console.log(this.props.loggedInStatus)
-      this.props.history.push('/home')
+  shouldRedirect = () => {
+    if (this.props.fetchComplete && !this.props.loggedInStatus) {
+      console.log(this.props.loggedInStatus);
+      this.props.history.push("/home");
     }
-  }
+  };
 
   initialFetch = () => {
     fetch("/api/tasks")

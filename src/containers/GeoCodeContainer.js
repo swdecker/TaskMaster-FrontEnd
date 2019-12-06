@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { GoogleComponent } from "react-google-location";
 import MapContainer from "./MapContainer.js";
 import { Button } from "reactstrap";
+import "./style.css";
 
 export class GeoCodeContainer extends Component {
   constructor(props) {
@@ -38,21 +39,30 @@ export class GeoCodeContainer extends Component {
   render() {
     return (
       <div>
-        <GoogleComponent
-          apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
-          language={"en"}
-          coordinates={true}
-          onChange={e => {
-            this.handleChange(e);
+        <div
+          style={{
+            width: "100%",
+            margin: "70px auto",
+            maxWidth: "700px"
           }}
-        />
-        <Button
-          type="submit"
-          color="primary"
-          onClick={() => this.handleClick()}
         >
-          Map your Task!
-        </Button>
+          <GoogleComponent
+            apiKey={process.env.REACT_APP_GOOGLE_API_KEY}
+            language={"en"}
+            coordinates={true}
+            onChange={e => {
+              this.handleChange(e);
+            }}
+          />
+          <Button
+            style={{ margin: "18px 0 0 0" }}
+            type="submit"
+            color="primary"
+            onClick={() => this.handleClick()}
+          >
+            Map your Task!
+          </Button>
+        </div>
 
         {!this.state.showMap ? null : (
           <MapContainer setCenter={this.state.coordinates} />
