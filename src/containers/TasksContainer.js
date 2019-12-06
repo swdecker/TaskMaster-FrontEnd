@@ -11,7 +11,10 @@ class TasksContainer extends Component {
     this.state = {
       tasks: [],
       categories: [],
-      task_id: null
+      task_id: null,
+      userTasks:[],
+      userCategories:[],
+      userLocations:[]
     };
   }
 
@@ -50,7 +53,11 @@ class TasksContainer extends Component {
           withCredentials: true
         })
         .then(response => {
-          console.log(response);
+          this.setState({
+            userCategories: response.data.categories,
+            userLocations: response.data.locations,
+            userTasks: response.data.tasks.data.map(task=> ({ id: task.id, ...task.attributes}) )
+          })
         });
     }
   };
