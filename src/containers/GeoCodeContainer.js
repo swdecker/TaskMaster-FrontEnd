@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { GoogleComponent } from "react-google-location";
 import MapContainer from "./MapContainer.js";
+import { Button } from "reactstrap";
 
 export class GeoCodeContainer extends Component {
   constructor(props) {
@@ -45,7 +46,14 @@ export class GeoCodeContainer extends Component {
             this.handleChange(e);
           }}
         />
-        <button onClick={() => this.handleClick()}>Submit</button>
+        <Button
+          type="submit"
+          color="primary"
+          onClick={() => this.handleClick()}
+        >
+          Map your Task!
+        </Button>
+
         {!this.state.showMap ? null : (
           <MapContainer setCenter={this.state.coordinates} />
         )}
