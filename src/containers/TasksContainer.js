@@ -189,7 +189,7 @@ class TasksContainer extends Component {
           onFilterChange={this.onFilterChange}
           />
 
-        {this.state.tasks
+        {this.state.userTasks
           .filter(task => task.id === this.state.task_id)
           .map(task => (
             <TaskZoom
