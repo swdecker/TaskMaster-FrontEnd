@@ -11,16 +11,16 @@ export class MapContainer extends Component {
   }
 
   render() {
-    
     return (
       <div
         style={{
-          height: "80vh",
-          width: "50%",
+          height: "40vh",
+          width: "60%",
+          display: "flex",
           position: "relative"
         }}
       >
-        <h3>MAP CONTAINER</h3>
+        <h3>Your Task's Location</h3>
         <GoogleMapReact
           yesIWantToUseGoogleMapApiInternals
           bootstrapURLKeys={{ key: process.env.REACT_APP_GOOGLE_API_KEY }}
