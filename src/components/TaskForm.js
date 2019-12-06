@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import NewCategoryModal from "./NewCategoryModal";
+import Task from "./Task";
 import {
   Col,
   Button,
@@ -25,10 +26,9 @@ class TaskForm extends Component {
       priority: "",
       location: "",
       description: "",
-      category: "",
+      category_id: "",
       duration: "",
       modal: false,
-      cat_id: null,
       dropdownCatOpen: false,
       dropdownLocOpen: false,
       locModal: false,
@@ -85,7 +85,7 @@ class TaskForm extends Component {
         name: this.state.name,
         priority: this.state.priority,
         description: this.state.description,
-        category_id: this.state.category,
+        category_id: this.state.category_id,
         location_id: 1,
         duration: this.state.duration,
         is_completed: false,
@@ -122,12 +122,13 @@ class TaskForm extends Component {
     console.log(event.target);
     console.log("an event was clicked");
     this.setState({
-      category: event.target.value
+      category_id: event.target.value
     });
   };
 
+
+
   render() {
-    console.log(this.props);
     const {
       name,
       priority,

@@ -86,12 +86,37 @@ class TasksContainer extends Component {
     fetch('/api/tasks/' + task_id,{
       method: 'DELETE'
     })
-    this.removeTask(task_id)
+    .then(() => this.removeTask(task_id))
   }
 
   removeTask = (taskId) => {
     this.setState({
       tasks: this.state.tasks.filter(task => (task.id !== taskId))
+    })
+  }
+
+  completeTask = (task_id) => {
+    const taskToEdit = this.state.userTasks.find(task => task.id === task_id)
+    fetch('api/tasks/' + task_id,{
+      method: 'PATCH',
+      headers: {
+        "Accept": "application/json",
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        is_completed: !taskToEdit.is_completed
+      })
+    })
+    .then(response => {
+      return response.json();
+    })
+    .then(taskObj => {
+      this.setState({
+        userTasks: [
+          ...this.state.userTasks.filter(task => task.id !== task_id),
+          {...taskToEdit, is_completed: !taskToEdit.is_completed}
+        ]
+      });
     })
   }
 
@@ -114,10 +139,10 @@ class TasksContainer extends Component {
 
   filterTasksByCategory = () => {
     if(this.state.category_filter) {
-      return this.state.tasks.filter(task => (task.category_id === parseInt(this.state.category_filter)))
+      return this.state.userTasks.filter(task => (task.category_id === parseInt(this.state.category_filter)))
       }
     else {
-      return this.state.tasks
+      return this.state.userTasks
     }
   }
 
@@ -145,6 +170,8 @@ class TasksContainer extends Component {
                   task={task}
                   deleteTask={this.deleteTask}
                   taskIdHolder={this.taskIdHolder}
+                  completeTask={this.completeTask}
+
                 />
               ))}
           </tbody>
