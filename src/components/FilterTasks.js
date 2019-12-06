@@ -18,6 +18,7 @@ const FilterTasks = (props) => {
             :
             <option> Bad option </option>
           }
+          <option value="all">All</option>
         </select>
       </label>
 

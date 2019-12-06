@@ -22,7 +22,7 @@ class TaskForm extends Component {
 
     this.state = {
       name: "",
-      priority: "",
+      priority: "low",
       location: "",
       description: "",
       category: "",
@@ -58,7 +58,7 @@ class TaskForm extends Component {
       },
       body: JSON.stringify({
         name: name,
-        user_id: 1
+        user_id: this.props.user.id
       })
     })
       .then(response => {
@@ -86,11 +86,11 @@ class TaskForm extends Component {
         priority: this.state.priority,
         description: this.state.description,
         category_id: this.state.category,
-        location_id: 1,
+        location_id: this.state.location,
         duration: this.state.duration,
         is_completed: false,
         deadline: this.state.startDate,
-        user_id: 1
+        user_id: this.props.user.id
       })
     })
       .then(response => {
@@ -119,22 +119,28 @@ class TaskForm extends Component {
     });
   };
   handleCategoryClick = event => {
-    console.log(event.target);
-    console.log("an event was clicked");
+  
     this.setState({
       category: event.target.value
     });
   };
 
+  handleLocationClick = event => {
+    this.setState({
+      location:event.target.value
+    })
+  }
+
   render() {
-    console.log(this.props);
+    
     const {
       name,
       priority,
       description,
       duration,
       dropdownCatOpen,
-      startDate
+      startDate,
+      dropdownLocOpen
     } = this.state;
 
     return (
@@ -210,7 +216,7 @@ class TaskForm extends Component {
                   toggle={this.handleCatToggle}
                 >
                   <DropdownToggle block id="category" caret>
-                    Choose Category
+                    {this.state.category.length > 0 ? this.state.category : "Choose Category"}
                   </DropdownToggle>
                   <DropdownMenu>
                     {this.props.userCategories &&
@@ -258,16 +264,33 @@ class TaskForm extends Component {
             <Col md={6}>
               <FormGroup>
                 <Label for="task-location">Choose Location</Label>
-
+                        <Dropdown isOpen={dropdownLocOpen}
+                          toggle={this.handleLocToggle}
+                        >
                 <DropdownToggle block id="task-location" caret>
-                  Choose Location
+                  {this.state.location.length > 0 ? this.state.location : "Choose Location"}
                 </DropdownToggle>
                 <DropdownMenu>
+                {this.props.userLocations &&
+                    this.props.userLocations.length > 0
+                      ? this.props.userLocations.map(loc => {
+                          return (
+                            <DropdownItem
+                              onClick={this.handleLocationClick}
+                              key={loc.id}
+                              value={loc.id}
+                            >
+                              {loc.name}
+                            </DropdownItem>
+                          );
+                        })
+                      : null}
                   <DropdownItem divider />
                   <DropdownItem onClick={this.toggleLocModal}>
                     Add new location
                   </DropdownItem>
                 </DropdownMenu>
+                </Dropdown>
               </FormGroup>
             </Col>
           </Row>

@@ -63,7 +63,7 @@ class TasksContainer extends Component {
           this.setState({
             userCategories: response.data.categories,
             userLocations: response.data.locations,
-            userTasks: response.data.tasks.data.map(task=> ({ id: task.id, ...task.attributes, category:{ id: task.relationships.category.data.id, name: response.data.categories.find(cat=>cat.id==task.relationships.category.data.id).name }, location:{id: task.relationships.location.data.id, ...response.data.locations.find(l=>l.id==task.relationships.location.data.id) } }) )
+            userTasks: response.data.tasks.data.map(task=> ({ id: task.id, ...task.attributes, category_id:task.relationships.category.data.id, category:{ id: task.relationships.category.data.id, name: response.data.categories.find(cat=>cat.id==task.relationships.category.data.id).name }, location_id: task.relationships.location.data.id, location:{id: task.relationships.location.data.id, ...response.data.locations.find(l=>l.id==task.relationships.location.data.id) } }) )
           })
         });
     }
@@ -107,17 +107,23 @@ class TasksContainer extends Component {
   }
 
   onFilterChange = (cat_id) => {
-    this.setState({
-      category_filter: cat_id
-    })
+    if(cat_id==="all"){
+      this.setState({
+        category_filter: null
+      })
+    } else {
+        this.setState({
+        category_filter: cat_id
+        })
+    }
   }
 
   filterTasksByCategory = () => {
     if(this.state.category_filter) {
-      return this.state.tasks.filter(task => (task.category_id === parseInt(this.state.category_filter)))
+      return this.state.userTasks.filter(task => (task.category_id === this.state.category_filter))
       }
     else {
-      return this.state.tasks
+      return this.state.userTasks
     }
   }
 
@@ -151,7 +157,7 @@ class TasksContainer extends Component {
         </Table>
 
         <FilterTasks
-          userCategories={this.state.categories}
+          userCategories={this.state.userCategories}
           onFilterChange={this.onFilterChange}
           />
 
@@ -170,6 +176,8 @@ class TasksContainer extends Component {
             />
           ))}
         <TaskForm
+          user={this.props.user}
+          userLocations={this.state.userLocations}
           userCategories={this.state.categories}
           updateCategories={this.updateCategories}
           updateTasks={this.updateTasks}
