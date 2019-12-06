@@ -14,26 +14,26 @@ class TasksContainer extends Component {
       tasks: [],
       categories: [],
       task_id: null,
-      userTasks:[],
-      userCategories:[],
-      userLocations:[]
+      userTasks: [],
+      userCategories: [],
+      userLocations: []
     };
   }
 
-  componentDidMount(){
-    this.shouldRedirect()
-    this.initialFetch()
-    this.userFetch()
+  componentDidMount() {
+    this.shouldRedirect();
+    this.initialFetch();
+    this.userFetch();
   }
-  componentDidUpdate(){
-    this.shouldRedirect()
+  componentDidUpdate() {
+    this.shouldRedirect();
   }
-  shouldRedirect = ()=>{
-    if(this.props.fetchComplete && !this.props.loggedInStatus) {
-      console.log(this.props.loggedInStatus)
-      this.props.history.push('/home')
+  shouldRedirect = () => {
+    if (this.props.fetchComplete && !this.props.loggedInStatus) {
+      console.log(this.props.loggedInStatus);
+      this.props.history.push("/home");
     }
-  }
+  };
 
   initialFetch = () => {
     fetch("/api/tasks")
@@ -58,8 +58,11 @@ class TasksContainer extends Component {
           this.setState({
             userCategories: response.data.categories,
             userLocations: response.data.locations,
-            userTasks: response.data.tasks.data.map(task=> ({ id: task.id, ...task.attributes}) )
-          })
+            userTasks: response.data.tasks.data.map(task => ({
+              id: task.id,
+              ...task.attributes
+            }))
+          });
         });
     }
   };
