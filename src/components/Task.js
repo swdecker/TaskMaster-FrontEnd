@@ -7,7 +7,7 @@ const Task = (props) => {
   return(
 
 
-    <Table dark hover borderless >
+    <Table dark hover borderless onClick={() => props.taskIdHolder(props.id)} >
           <thead>
             <tr>
               <th></th>

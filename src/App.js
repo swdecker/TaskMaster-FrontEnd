@@ -2,7 +2,6 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom';
 import axios from "axios";
-
 import TasksContainer from './containers/TasksContainer';
 import Login from './components/registrations/Login';
 import Signup from './components/registrations/Signup';
@@ -17,12 +16,12 @@ class App extends Component {
       fetchComplete: false
     };
   }
-  
+
   componentDidMount() {
-    this.loginStatus()
+    this.loginStatus();
   }
-  
-  backendUrl = 'http://localhost:3001/api'
+
+  backendUrl = "http://localhost:3001/api";
   loginStatus = () => {
     axios.get(this.backendUrl+'/logged_in', {withCredentials: true})
     .then(response=>{
@@ -51,7 +50,7 @@ class App extends Component {
     })
   }
 
-  handleLogout = ()=>{
+  handleLogout = () => {
     this.setState({
       isLoggedIn:false,
       user:null,
@@ -120,7 +119,7 @@ class App extends Component {
           </Switch>
         </Router>
       </div>
-    )
+    );
   }
 }
 

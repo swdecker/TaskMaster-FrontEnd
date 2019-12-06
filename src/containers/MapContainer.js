@@ -11,7 +11,6 @@ export class MapContainer extends Component {
   }
 
   render() {
-    
     return (
       <div
         style={{
