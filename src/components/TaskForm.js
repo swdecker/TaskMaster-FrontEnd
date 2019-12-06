@@ -118,13 +118,19 @@ class TaskForm extends Component {
       dropdownLocOpen: !this.state.dropdownLocOpen
     });
   };
+  handleCategoryClick = event => {
+    console.log(event.target);
+    console.log("an event was clicked");
+    this.setState({
+      category: event.target.value
+    });
+  };
 
   render() {
     console.log(this.props);
     const {
       name,
       priority,
-      location,
       description,
       duration,
       dropdownCatOpen,
@@ -187,7 +193,7 @@ class TaskForm extends Component {
 
                 <Input
                   type="text"
-                  name="task-duration"
+                  name="duration"
                   id="task-duration"
                   placeholder="Length of time in minutes..."
                   value={duration}
@@ -211,7 +217,11 @@ class TaskForm extends Component {
                     this.props.userCategories.length > 0
                       ? this.props.userCategories.map(cat => {
                           return (
-                            <DropdownItem key={cat.id} value={cat.id}>
+                            <DropdownItem
+                              onClick={this.handleCategoryClick}
+                              key={cat.id}
+                              value={cat.id}
+                            >
                               {cat.name}
                             </DropdownItem>
                           );
@@ -223,6 +233,23 @@ class TaskForm extends Component {
                     </DropdownItem>
                   </DropdownMenu>
                 </Dropdown>
+              </FormGroup>
+            </Col>
+          </Row>
+
+          <Row>
+            <Col md={6}>
+              <Label for="take-deadline">Deadline</Label>
+              <FormGroup>
+                <DatePicker
+                  selected={startDate}
+                  onChange={date => this.setStartDate(date)}
+                  showTimeSelect
+                  timeFormat="HH:mm"
+                  timeIntervals={15}
+                  timeCaption="time"
+                  dateFormat="MMMM d, yyyy h:mm aa"
+                />
               </FormGroup>
             </Col>
           </Row>
@@ -245,26 +272,13 @@ class TaskForm extends Component {
             </Col>
           </Row>
 
-          <FormGroup row>
-            <Label for="exampleText" sm={2}>
-              Deadline
-            </Label>
-            <Col sm={10}>
-              <DatePicker
-                selected={startDate}
-                onChange={date => this.setStartDate(date)}
-                showTimeSelect
-                timeFormat="HH:mm"
-                timeIntervals={15}
-                timeCaption="time"
-                dateFormat="MMMM d, yyyy h:mm aa"
-              />
+          <Row>
+            <Col md={6}>
+              <Button type="submit" color="primary">
+                Add new task
+              </Button>
             </Col>
-          </FormGroup>
-
-          <Button type="submit" color="primary">
-            Add new task
-          </Button>
+          </Row>
         </Form>
 
         <NewCategoryModal
