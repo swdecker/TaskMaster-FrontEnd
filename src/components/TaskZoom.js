@@ -10,7 +10,7 @@ const TaskZoom = (props) => {
         <hr className="my-2" />
         <p>{props.duration} minutes</p>
         <p className="lead">
-          <Button color="primary">Learn More</Button>
+          <Button color="primary">Task Complete</Button>
         </p>
       </Jumbotron>
     </div>
