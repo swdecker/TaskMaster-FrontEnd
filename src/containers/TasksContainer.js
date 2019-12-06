@@ -15,9 +15,19 @@ class TasksContainer extends Component {
     };
   }
 
-  componentDidMount() {
-    this.initialFetch();
-    this.userFetch();
+  componentDidMount(){
+    this.shouldRedirect()
+    this.initialFetch()
+    this.userFetch()
+  }
+  componentDidUpdate(){
+    this.shouldRedirect()
+  }
+  shouldRedirect = ()=>{
+    if(this.props.fetchComplete && !this.props.loggedInStatus) {
+      console.log(this.props.loggedInStatus)
+      this.props.history.push('/home')
+    }
   }
 
   initialFetch = () => {
