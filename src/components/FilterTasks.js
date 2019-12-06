@@ -8,7 +8,7 @@ const FilterTasks = (props) => {
     <div>
 
       <label>
-        <strong>Filter Category:</strong>
+        <strong>Filter by Category:</strong>
         <select onChange={handleChange}>
           {
             props.userCategories && props.userCategories.length > 0
