@@ -135,12 +135,13 @@ class TaskForm extends Component {
             onChange={this.changeHandler}>
 
             <option>Hello from a basic option JSX</option>
-            {this.props.userCategories && this.props.userCategories.length > 0 ? this.props.userCategories.map(cat => {
-              return <option value={cat.id}>{cat.name}</option>
-            })
-          :
-          <option> Bad option</option>
-          }
+              {this.props.userCategories && this.props.userCategories.length > 0
+              ?
+              this.props.userCategories.map(cat => {
+              return <option value={cat.id}>{cat.name}</option>})
+              :
+              <option> Bad option</option>
+              }
 
            </Input>
            <Button color="danger" onClick={this.toggleModal}>add category</Button>

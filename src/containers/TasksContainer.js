@@ -1,44 +1,30 @@
 import GeoCodeContainer from "./GeoCodeContainer";
 import React, { Component } from 'react';
 import Task from '../components/Task'
+import FilterTasks from '../components/FilterTasks'
 import TaskForm from '../components/TaskForm'
 import TaskZoom from '../components/TaskZoom'
-import axios from 'axios'
 
 
 class TasksContainer extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       tasks: [],
       categories: [],
-      task_id: null
+      task_id: null,
+      category_filter: null
     }
   }
 
   componentDidMount(){
-    this.initialFetch()
-    this.userFetch()
-  }
-
-  initialFetch = ()=>{
     fetch('/api/tasks')
-      .then(response => { return response.json()})
-      .then(userData => { 
-        this.setState({
-          tasks: userData['tasks'],
-          categories: userData['categories']
-        })
+    .then(response => { return response.json()})
+    .then(userData => { this.setState({
+      tasks: userData['tasks'],
+      categories: userData['categories']
       })
-  }
-
-  userFetch = ()=>{
-    if (this.props.user){
-      axios.get(`http://localhost:3001/api/tasks/${this.props.user.id}`, {withCredentials: true})
-      .then(response=>{
-        console.log(response)
-      })
-    }
+    })
   }
 
   updateCategories = (catObject) => {
@@ -70,7 +56,7 @@ class TasksContainer extends Component {
 
   taskIdHolder = (id) => {
     console.log("KAAAREN!")
-    !this.state.task_id ? 
+    !this.state.task_id ?
     this.setState({
       task_id: id
       }) :
@@ -79,16 +65,30 @@ class TasksContainer extends Component {
       })
   }
 
-  taskIdNull = () => {
-
+  onFilterChange = (cat_id) => {
+    this.setState({
+      category_filter: cat_id
+    })
   }
+
+  filterTasksByCategory = () => {
+    if(this.state.category_filter) {
+      return this.state.tasks.filter(task => (task.category_id === this.state.category_filter))
+    }
+    else {
+      return this.state.tasks
+    }
+  }
+
+
+
 
   render() {
     return (
       <div>
 
           <h2 align="center"> Tasks </h2>
-          {this.state.tasks.map(task => (
+          {this.filterTasksByCategory().map(task => (
             <Task
               key={task.id}
               id={task.id}
@@ -101,6 +101,10 @@ class TasksContainer extends Component {
               taskIdHolder={this.taskIdHolder}
             />))
           }
+          <FilterTasks
+          userCategories={this.state.categories}
+          onFilterChange={this.onFilterChange}
+          />
           {this.state.tasks.filter(task => task.id === this.state.task_id).map(task => (
             <TaskZoom
               key={task.id}
@@ -118,12 +122,12 @@ class TasksContainer extends Component {
               updateCategories={this.updateCategories}
               updateTasks={this.updateTasks}
             />
-        <div>
-          <GeoCodeContainer />
-        </div>
 
-        </div>
-      )
+          <GeoCodeContainer />
+
+
+      </div>
+    )
   }
 }
 

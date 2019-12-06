@@ -8,7 +8,7 @@ const TaskZoom = (props) => {
         <h1 className="display-3">{props.name}</h1>
         <p className="lead">{props.description}</p>
         <hr className="my-2" />
-        <p></p>
+        <p>{props.duration} minutes</p>
         <p className="lead">
           <Button color="primary">Learn More</Button>
         </p>
