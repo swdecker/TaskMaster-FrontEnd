@@ -27,10 +27,10 @@ const Home = (props) => {
         <p className="lead">
           <Row>
             <Col>
-          <Link to='/login'><Button color="primary">Log In</Button></Link>
+          <Link to='/login'><Button style={{width: "200px"}} color="primary">Log In</Button></Link>
           </Col>
           <Col>
-          <Link to='/signup'><Button color="primary">Sign Up</Button></Link>
+          <Link to='/signup'><Button style={{width: "200px"}} color="primary">Sign Up</Button></Link>
           </Col>
           { 
             props.loggedInStatus ? 
