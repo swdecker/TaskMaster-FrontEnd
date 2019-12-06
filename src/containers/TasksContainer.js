@@ -81,7 +81,7 @@ class TasksContainer extends Component {
     });
   };
 
- 
+
   deleteTask = (task_id) => {
     fetch('/api/tasks/' + task_id,{
       method: 'DELETE'
@@ -114,15 +114,12 @@ class TasksContainer extends Component {
 
   filterTasksByCategory = () => {
     if(this.state.category_filter) {
-      return this.state.tasks.filter(task => (task.category_id === this.state.category_filter))
-    }
+      return this.state.tasks.filter(task => (task.category_id === parseInt(this.state.category_filter)))
+      }
     else {
       return this.state.tasks
     }
   }
-
-
-
 
   render() {
     return (
@@ -140,7 +137,7 @@ class TasksContainer extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.state.tasks &&
+            {this.filterTasksByCategory() &&
               this.filterTasksByCategory().map(task => (
                 <Task
                   key={task.id}
@@ -157,7 +154,7 @@ class TasksContainer extends Component {
           userCategories={this.state.categories}
           onFilterChange={this.onFilterChange}
           />
-                                                                               
+
         {this.state.tasks
           .filter(task => task.id === this.state.task_id)
           .map(task => (
